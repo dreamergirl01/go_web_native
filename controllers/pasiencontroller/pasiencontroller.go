@@ -10,11 +10,17 @@ import (
 var PasienModel = models.NewPasienModel()
 
 func Index(response http.ResponseWriter, request *http.Request) {
+	//panggil method findAll yang ada pada pasienmodel
+	pasien, _ := PasienModel.FindAll()
+	data := map[string]interface{}{
+		"pasien": pasien,
+	}
+
 	temp, err := template.ParseFiles("views/pasien/index.html")
 	if err != nil {
 		panic(err)
 	}
-	temp.Execute(response, nil)
+	temp.Execute(response, data)
 }
 
 func Add(response http.ResponseWriter, request *http.Request) {

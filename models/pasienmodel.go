@@ -23,6 +23,32 @@ func NewPasienModel() *PasienModel {
 	}
 }
 
+//untuk mengambil semua data pasien
+func (p *PasienModel) FindAll() ([]entities.Pasien, error){
+	rows, err := p.conn.Query("select * from pasien")
+	if err != nil {
+		return []entities.Pasien{}, err
+	}
+	defer rows.Close()
+
+	//untuk menampung data dari iterasi rows, err := p.conn.Query("select * from pasien")
+	var dataPasien []entities.Pasien
+	for rows.Next(){
+		//menampung satu data pasien
+		var pasien entities.Pasien
+		rows.Scan(&pasien.ID, 
+			&pasien.NamaLengkap, 
+			&pasien.NIK, 
+			&pasien.JenisKelamin, 
+			&pasien.TempatLahir, 
+			&pasien.TanggalLahir, 
+			&pasien.Alamat,
+			&pasien.NoHp)
+		dataPasien = append(dataPasien, pasien)
+	}
+	return dataPasien, nil
+}
+
 // proses menyimpan data ke database
 // create menerima parameter dengan tipe struct pasien
 func (p *PasienModel) Create(pasien entities.Pasien) bool {
