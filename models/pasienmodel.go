@@ -77,7 +77,7 @@ func (p *PasienModel) Create(pasien entities.Pasien) bool {
 }
 
 //untuk proses edit
-func (p* PasienModel) Find(id int64, pasien *entities.Pasien) error{
+func (p *PasienModel) Find(id int64, pasien *entities.Pasien) error{
 	return p.conn.QueryRow("select * from pasien where id = ?", id).Scan(
 		&pasien.ID, 
 		&pasien.NamaLengkap,
@@ -88,7 +88,7 @@ func (p* PasienModel) Find(id int64, pasien *entities.Pasien) error{
 		&pasien.Alamat,
 		&pasien.NoHp)
 }
-func (p* PasienModel) Update(pasien entities.Pasien) error {
+func (p *PasienModel) Update(pasien entities.Pasien) error {
 	_, err := p.conn.Exec(
 		"update pasien set nama_lengkap = ?, nik = ?, jenis_kelamin = ?, tempat_lahir = ?, tanggal_lahir = ?, alamat = ?, no_hp = ? where id = ?",
 		pasien.NamaLengkap, pasien.NIK, pasien.JenisKelamin, pasien.TempatLahir, pasien.TanggalLahir, pasien.Alamat, pasien.NoHp, pasien.ID)
@@ -98,4 +98,9 @@ func (p* PasienModel) Update(pasien entities.Pasien) error {
 	}
 
 	return nil
+}
+
+//proses delete
+func (p *PasienModel) Delete(id int64){
+	p.conn.Exec("delete from pasien where id = ?", id)
 }
