@@ -16,7 +16,7 @@
       <h3>Data Pasien</h3>
       <a href="/pasien/add" class="btn btn-sm btn-primary">Tambah Data</a>
       <hr />
-      <table class="table table-sriped tabel-hover">
+      <table class="table table-striped tabel-hover">
         <thead>
           <tr>
             <th>Nama Lengkap</th>
@@ -45,6 +45,7 @@
               <a href="/pasien/delete?id={{.ID}}" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus data')" class="btn btn-sm btn-danger">Hapus</a>
             </td>
           </tr>
+          {{end}}
         </tbody>
       </table>
     </div>

@@ -2,11 +2,13 @@ package pasiencontroller
 
 import (
 	"go_web_native/entities"
+	"go_web_native/libraries"
 	"go_web_native/models"
 	"html/template"
 	"net/http"
 )
 
+var validation = libraries.NewValidation()
 var PasienModel = models.NewPasienModel()
 
 func Index(response http.ResponseWriter, request *http.Request) {
@@ -45,11 +47,18 @@ func Add(response http.ResponseWriter, request *http.Request) {
 		pasien.Alamat = request.Form.Get("alamat")
 		pasien.NoHp = request.Form.Get("no_hp")
 
-		//proses simpan data ke database
-		PasienModel.Create(pasien)
-		data := map[string]interface{}{
-			"pesan" : "Data Berhasil Disimpan",
+		var data = make(map[string]interface{})
+
+		vErrors := validation.Struct(pasien)
+
+		if vErrors != nil {
+			data["validation"] = vErrors
+		}else{
+			data["pesan"] = "Data Pasien Berhasil Disimpan"
+			//proses simpan data ke database
+			PasienModel.Create(pasien)
 		}
+		
 		//setelah proses simpan data ke database telah berhasil kembalikan view untuk tambah data
 		temp, _ := template.ParseFiles("views/pasien/add.html")
 		temp.Execute(response, data)
