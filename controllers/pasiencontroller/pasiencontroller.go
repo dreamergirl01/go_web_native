@@ -52,6 +52,7 @@ func Add(response http.ResponseWriter, request *http.Request) {
 		vErrors := validation.Struct(pasien)
 
 		if vErrors != nil {
+			data["pasien"] = pasien
 			data["validation"] = vErrors
 		}else{
 			data["pesan"] = "Data Pasien Berhasil Disimpan"
